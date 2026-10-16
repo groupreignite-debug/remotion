@@ -1,0 +1,22 @@
+{
+  "name": "perspicara-reel-1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Perspicara Instagram reel 1: Problem → Solution",
+  "scripts": {
+    "dev": "remotion studio",
+    "still": "remotion still Reel1ProblemSolution out/still.png --frame=600",
+    "render": "remotion render Reel1ProblemSolution out/reel-1-problem-solution.mp4 --codec=h264"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "@remotion/media-utils": "4.0.536",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.536"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}
