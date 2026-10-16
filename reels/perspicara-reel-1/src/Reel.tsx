@@ -13,6 +13,7 @@ import {Captions} from './components/Captions';
 import {EndCard} from './components/EndCard';
 import {LogoWatermark} from './components/LogoWatermark';
 import {
+	buildTimeline,
 	fontFamily,
 	getScene,
 	MUSIC,
@@ -65,12 +66,9 @@ const SceneTransition: React.FC<{
 	);
 };
 
-export const Reel: React.FC<ReelProps> = ({
-	scenes,
-	captions,
-	hasVoiceover,
-	hasMusic,
-}) => {
+const {scenes, captions, voSegments} = buildTimeline();
+
+export const Reel: React.FC<ReelProps> = ({hasVoiceover, hasMusic}) => {
 	const end = getScene(scenes, 'end');
 
 	return (
@@ -96,7 +94,17 @@ export const Reel: React.FC<ReelProps> = ({
 				<LogoWatermark fadeOutAt={end.from} />
 			</Sequence>
 			<Captions captions={captions} />
-			{hasVoiceover ? <Html5Audio src={staticFile(VOICEOVER)} /> : null}
+			{hasVoiceover
+				? voSegments.map((seg) => (
+						<Sequence key={seg.from} from={seg.from} name="Voiceover">
+							<Html5Audio
+								src={staticFile(VOICEOVER)}
+								trimBefore={seg.trimBefore}
+								trimAfter={seg.trimAfter}
+							/>
+						</Sequence>
+					))
+				: null}
 			{hasMusic ? (
 				<Html5Audio
 					src={staticFile(MUSIC)}

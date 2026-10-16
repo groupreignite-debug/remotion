@@ -1,5 +1,2 @@
-Drop the voiceover here as `reel-1.mp3` (and optionally background music as `music.mp3`).
-The composition picks them up automatically and re-times every scene to the voiceover length.
-
-Optional: word-level captions as `public/captions/reel-1.json`
-(an array of `{"text": string, "startMs": number, "endMs": number}`, e.g. from Whisper).
+`reel-1.mp3` is the voiceover. Its phrase timings live in `VO_PHRASES` in `src/config.ts`. Update them if you replace the file.
+Optionally add background music as `music.mp3`.

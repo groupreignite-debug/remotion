@@ -5,7 +5,7 @@ import {ChatBubble} from '../components/ChatBubble';
 import {Grad, Headline, SubText} from '../components/Headline';
 import {COLORS, GRADIENT, SAFE} from '../config';
 
-const NIGHT_AT = 150;
+const NIGHT_AT = 110;
 
 const EXCHANGES = [
 	{q: 'What are your hours?', a: "We're open 9 to 6, Monday to Saturday.", at: 40},

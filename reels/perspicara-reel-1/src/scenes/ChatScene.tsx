@@ -7,22 +7,21 @@ import {COLORS, GRADIENT, SAFE} from '../config';
 const MAIN = [
 	{text: 'What are your hours?', at: 12, time: '9:02 AM'},
 	{text: "What's the price?", at: 44, time: '9:04 AM'},
-	{text: 'Are you available?', at: 76, time: '9:05 AM'},
+	{text: 'Are you available?', at: 72, time: '9:05 AM'},
 ];
 
 // The pile keeps growing after the three headline questions.
 const PILE = [
 	'Do you deliver?',
-	'Can I book for Friday?',
 	"What's the price again?",
 ];
 
 export const ChatScene: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const counterIn = spring({frame: frame - 100, fps, config: {damping: 12, stiffness: 220}});
-	const count = 12 + Math.max(0, Math.floor((frame - 100) * 0.45));
-	const bump = 1 + Math.max(0, Math.sin((frame - 100) * 0.9)) * 0.06 * counterIn;
+	const counterIn = spring({frame: frame - 82, fps, config: {damping: 12, stiffness: 220}});
+	const count = 12 + Math.max(0, Math.floor((frame - 82) * 0.5));
+	const bump = 1 + Math.max(0, Math.sin((frame - 82) * 0.9)) * 0.06 * counterIn;
 
 	return (
 		<AbsoluteFill style={{padding: `${SAFE.top + 110}px ${SAFE.side}px 0`}}>
@@ -75,7 +74,7 @@ export const ChatScene: React.FC = () => {
 							key={text}
 							side="customer"
 							text={text}
-							at={106 + i * 14}
+							at={90 + i * 14}
 							fontSize={38}
 							faded
 						/>

@@ -134,11 +134,11 @@ export const TimeScene: React.FC = () => {
 					alignItems: 'center',
 				}}
 			>
-				<Step delay={10}>1 minute</Step>
-				<Arrow delay={32} />
-				<Step delay={42}>1 hour</Step>
-				<Arrow delay={70} />
-				<Step delay={80}>
+				<Step delay={28}>1 minute</Step>
+				<Arrow delay={80} />
+				<Step delay={92}>1 hour</Step>
+				<Arrow delay={128} />
+				<Step delay={140}>
 					<Grad>every week</Grad>
 				</Step>
 			</div>
