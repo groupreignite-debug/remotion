@@ -82,7 +82,7 @@ const Reel: React.FC = () => {
 			<EndCard f={f} />
 			<Header f={f} out={fadeIn(f, END_CARD_START, 6)} />
 			<Grain f={f} />
-			<Html5Audio src={staticFile('voiceover.mp3')} />
+			<Html5Audio src={staticFile('voiceover.wav')} />
 			{SFX.map((s, i) => (
 				<Sequence key={i} from={s.frame} layout="none">
 					<Html5Audio src={staticFile(s.src)} volume={s.volume} />
