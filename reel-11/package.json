@@ -1,0 +1,24 @@
+{
+  "name": "reignite-reel-11",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reignite Group Reel 11 — ليش أقوى اللوغوهات بسيطة؟ (1080x1920, 30fps)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Reel11 out/reel-11.mp4 --codec=h264",
+    "still": "remotion still Reel11 out/still.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "@remotion/fonts": "4.0.536",
+    "@remotion/paths": "4.0.536",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.536",
+    "simple-icons": "16.35.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "typescript": "5.8.3"
+  }
+}
