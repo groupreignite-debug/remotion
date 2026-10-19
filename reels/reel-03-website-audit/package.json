@@ -1,0 +1,24 @@
+{
+  "name": "reel-03-website-audit",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reignite Group - Reel 03: The 5-Second Test (website audit #1)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Reel03 out/reel-03-website-audit.mp4",
+    "align": "python3 scripts/align.py",
+    "sfx": "python3 scripts/make-sfx.py"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "@remotion/fonts": "4.0.536",
+    "@remotion/media": "4.0.536",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.536"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}
