@@ -1,5 +1,4 @@
-import {Audio} from '@remotion/media';
-import {AbsoluteFill, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Html5Audio, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {SOFT} from './brand';
 import {Background, Filters, Grain} from './components/Background';
 import {Checklist, MarkSpec, SIDE_DOCK} from './components/Checklist';
@@ -102,7 +101,7 @@ export const Reel03: React.FC = () => {
 			{/* Voiceover — untouched, only spaced out to restore the two 5s silences */}
 			{VO_SEGMENTS.map((seg) => (
 				<Sequence key={seg.from} from={seg.from} name="Voiceover" layout="none">
-					<Audio src={staticFile('voiceover.m4a')} trimBefore={seg.trimBefore} trimAfter={seg.trimAfter ?? undefined} />
+					<Html5Audio src={staticFile('voiceover.m4a')} trimBefore={seg.trimBefore} trimAfter={seg.trimAfter ?? undefined} />
 				</Sequence>
 			))}
 

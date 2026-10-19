@@ -35,15 +35,14 @@ If Remotion can't download its own Chrome, point it at a local Chromium:
 | `public/voiceover.m4a` | Original voiceover, untouched |
 | `source-media/site-02-original.mp4` | Original screen recording (passing site) |
 | `public/site-02-hero.mp4` | Made by `scripts/prepare-footage.sh`: 1.1–7.0 s of the recording (skips the iOS control centre), status bar and URL bar cropped off, real brand names blurred |
-| `public/sfx/*.wav` | Sound design (ticks, whoosh, buzzer, chime, pop, stamp, keys, snap), synthesised by `scripts/make-sfx.py` |
+| `public/sfx/*.wav` | Sound design (ticks, whoosh, buzzer, chime, pop, stamp, keys, snap), synthesised by `scripts/make-sfx.py`; master level `SFX_GAIN` in `src/components/Sfx.tsx` |
+| `public/reignite-logo.png` | Official logo as supplied; `reignite-logo-transparent.png` is the same lockup with the black background keyed out, used on the end card |
 | `public/fonts/*` | IBM Plex Sans Arabic and Inter (OFL), self-hosted so rendering needs no network |
 
 ## Things to confirm with the client
 
 - **Script file**: `reel-03-website-audit-script-ar.txt` wasn't supplied, so the on-screen text uses the lines
   quoted in the brief, word for word.
-- **Logo**: the flame logo file wasn't supplied. A vector flame stand-in is drawn on the end card. Drop the real
-  file in `public/` and set `LOGO_FILE` in `src/components/Logo.tsx`.
 - **Real names in the footage**: the recording is stripe.com. The Stripe logo, the "…running on Stripe" ticker
   and the customer-logo strip (Amazon / NVIDIA / Ford) are blurred. To show them, set `BLUR_REAL_NAMES = false` in
   `src/components/SiteTwo.tsx`.

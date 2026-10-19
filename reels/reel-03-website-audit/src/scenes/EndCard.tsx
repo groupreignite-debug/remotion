@@ -7,36 +7,27 @@ export const EndCard: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const logo = spring({frame, fps, config: SNAPPY});
-	const name = spring({frame: frame - 5, fps, config: SOFT});
-	const tag = spring({frame: frame - 10, fps, config: SOFT});
+	const tag = spring({frame: frame - 8, fps, config: SOFT});
+	const glow = 0.5 + 0.15 * Math.sin(frame / 4);
 	return (
-		<div style={{position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: 220}}>
-			<div style={{transform: `scale(${0.6 + 0.4 * logo})`, opacity: logo}}>
-				<Logo size={230} flicker={Math.sin(frame / 3)} />
-			</div>
+		<div style={{position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: 300}}>
 			<div
 				style={{
-					marginTop: 46,
-					fontFamily: INTER,
-					fontWeight: 800,
-					fontSize: 60,
-					letterSpacing: '0.18em',
-					color: C.text,
-					opacity: name,
-					transform: `translateY(${(1 - name) * 30}px)`,
-					filter: `blur(${(1 - name) * 8}px)`,
+					transform: `scale(${0.75 + 0.25 * logo})`,
+					opacity: logo,
+					filter: `blur(${(1 - logo) * 10}px) drop-shadow(0 0 40px rgba(255,90,31,${glow * logo}))`,
 				}}
 			>
-				REIGNITE GROUP
+				<Logo width={820} />
 			</div>
 			<div
 				style={{
-					marginTop: 22,
+					marginTop: 56,
 					fontFamily: INTER,
 					fontWeight: 500,
-					fontSize: 31,
-					color: C.dim,
-					opacity: tag,
+					fontSize: 34,
+					color: C.text,
+					opacity: tag * 0.85,
 					transform: `translateY(${(1 - tag) * 24}px)`,
 				}}
 			>
