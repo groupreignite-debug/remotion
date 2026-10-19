@@ -1,0 +1,13 @@
+{
+  "name": "reignite-carousel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export": "node export.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1",
+    "potrace": "2.1.8",
+    "sharp": "0.34.4"
+  }
+}
