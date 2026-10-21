@@ -47,23 +47,22 @@ const CX = SAFE_W / 2;
 
 const s = (sec: number) => Math.round(sec * 30);
 
-// Voiceover is played slightly faster so it ends before the 28.4s end card
-const VO_RATE = 1.06;
-
-// Each line's speech span in seconds within vo.mp3, measured from its pauses
+// vo.m4a is a phone recording, cleaned up (EQ, de-ess,
+// compression, loudness), with pauses tightened and sped up 1.08x.
+// Each line's speech span in seconds within vo.m4a:
 const VO_LINES: {text: string; start: number; end: number}[] = [
-	{text: 'عندك Google Analytics؟ بعدك بحاجة لـPixel.', start: 0, end: 2.83},
-	{text: 'عم تدفع على إعلانات Meta؟ هيدا بيهمّك.', start: 3.25, end: 5.61},
-	{text: 'Google Analytics بيراقب موقعك.', start: 6.12, end: 7.82},
-	{text: 'من وين إجا الزائر، وشو عمل.', start: 8.3, end: 10.04},
-	{text: 'الـPixel بيبعت هالمعلومات لـMeta.', start: 10.45, end: 12.38},
-	{text: 'لتعرف مين اشترى بسبب الإعلان.', start: 12.61, end: 14.59},
-	{text: 'وترجع تلحق اللي فلّوا بلا ما يشتروا.', start: 14.74, end: 16.87},
-	{text: 'وتلاقي ناس بيشبهوا زبائنك.', start: 17.15, end: 18.7},
-	{text: 'Analytics بيخبرك. الـPixel بيعلّم إعلانك.', start: 19.17, end: 22.09},
-	{text: 'عم تشغّل إعلانات Meta؟ بدك التنين.', start: 22.62, end: 24.93},
-	{text: 'مش متأكد إذا موقعك فيه واحد؟', start: 25.33, end: 27.11},
-	{text: 'اكتب PIXEL بالكومنتات ومنشيّك معك.', start: 27.45, end: 29.72},
+	{text: 'عندك Google Analytics؟ بعدك بحاجة لـPixel.', start: 0.05, end: 2.67},
+	{text: 'عم تدفع على إعلانات Meta؟ هيدا بيهمّك.', start: 3.06, end: 5.35},
+	{text: 'Google Analytics بيراقب موقعك.', start: 5.75, end: 7.49},
+	{text: 'من وين إجا الزائر، وشو عمل.', start: 7.89, end: 9.47},
+	{text: 'الـPixel بيبعت هالمعلومات لـMeta.', start: 9.87, end: 11.47},
+	{text: 'لتعرف مين اشترى بسبب الإعلان.', start: 11.87, end: 13.62},
+	{text: 'وترجع تلحق اللي فلّوا بلا ما يشتروا.', start: 14.02, end: 16.17},
+	{text: 'وتلاقي ناس بيشبهوا زبائنك.', start: 16.56, end: 18.35},
+	{text: 'Analytics بيخبرك. الـPixel بيعلّم إعلانك.', start: 18.75, end: 21.98},
+	{text: 'عم تشغّل إعلانات Meta؟ بدك التنين.', start: 22.38, end: 24.77},
+	{text: 'مش متأكد إذا موقعك فيه واحد؟', start: 25.17, end: 26.74},
+	{text: 'اكتب PIXEL بالكومنتات ومنشيّك معك.', start: 27.14, end: 29.22},
 ];
 
 // Each scene cuts in just before its line is spoken
@@ -72,21 +71,21 @@ const SCENES: {
 	vo: {text: string; from: number; durationInFrames: number} | null;
 }[] = [
 	...VO_LINES.map((line) => {
-		const from = Math.max(0, s(line.start / VO_RATE - 0.12));
-		const speechFrom = s(line.start / VO_RATE);
+		const from = Math.max(0, s(line.start - 0.12));
+		const speechFrom = s(line.start);
 		return {
 			from,
 			vo: {
 				text: line.text,
 				from: speechFrom - from,
-				durationInFrames: s(line.end / VO_RATE) - speechFrom,
+				durationInFrames: s(line.end) - speechFrom,
 			},
 		};
 	}),
-	{from: s(28.4), vo: null},
+	{from: s(29.5), vo: null},
 ];
 
-export const REIGNITE_REEL_DURATION = s(30);
+export const REIGNITE_REEL_DURATION = s(31);
 
 const usePop = (delay: number) => {
 	const frame = useCurrentFrame();
@@ -1459,24 +1458,20 @@ export const ReigniteReel: React.FC = () => {
 							/>
 						) : null}
 						{i > 0 ? (
-							<Audio src={staticFile('reignite/whoosh.wav')} volume={0.18} />
+							<Audio src={staticFile('reignite/whoosh.wav')} volume={0.126} />
 						) : null}
 						<Sequence from={i === 0 ? 14 : 3} layout="none">
-							<Audio src={staticFile('reignite/pop.wav')} volume={0.18} />
+							<Audio src={staticFile('reignite/pop.wav')} volume={0.126} />
 						</Sequence>
 					</Sequence>
 				);
 			})}
-			<Audio
-				src={staticFile('reignite/vo.mp3')}
-				playbackRate={VO_RATE}
-				volume={1.8}
-			/>
+			<Audio src={staticFile('reignite/vo.m4a')} />
 			<Sequence from={SCENES[0].from + 42} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.3} />
+				<Audio src={staticFile('reignite/impact.wav')} volume={0.21} />
 			</Sequence>
 			<Sequence from={SCENES[9].from + 12} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.35} />
+				<Audio src={staticFile('reignite/impact.wav')} volume={0.245} />
 			</Sequence>
 			{[1, 2, 3, 4, 5].map((n) => (
 				<Sequence
@@ -1485,7 +1480,7 @@ export const ReigniteReel: React.FC = () => {
 					durationInFrames={6}
 					layout="none"
 				>
-					<Audio src={staticFile('reignite/click.wav')} volume={0.25} />
+					<Audio src={staticFile('reignite/click.wav')} volume={0.175} />
 				</Sequence>
 			))}
 		</AbsoluteFill>
