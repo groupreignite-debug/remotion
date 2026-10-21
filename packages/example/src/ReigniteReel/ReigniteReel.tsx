@@ -36,11 +36,11 @@ const RED = '#FF3B3B';
 const PANEL = '#1A1A1A';
 const LINE = '#2C2C2C';
 
-// Instagram safe zone is x 0-850, y 230-1440. Text sits in x 110-850 so it
-// reads close to centered; visuals and the logo are centered on the frame.
+// Everything is centered on the frame. Text stays within y 230-1440 and keeps
+// a 100px margin on both sides so it reads centered.
 const FRAME_CX = 540;
-const TEXT_LEFT = 110;
-const TEXT_W = 850 - TEXT_LEFT;
+const TEXT_LEFT = 100;
+const TEXT_W = 1080 - TEXT_LEFT * 2;
 // Coordinate space of the visual stage, which is centered on the frame
 const SAFE_W = 850;
 const CX = SAFE_W / 2;
@@ -695,7 +695,7 @@ const Scene4: React.FC = () => {
 							key={kind}
 							style={{
 								position: 'absolute',
-								left: 110 + i * 260 - 55,
+								left: 165 + i * 260 - 55,
 								top: -40,
 								transform: `scale(${pop})`,
 							}}
@@ -712,7 +712,7 @@ const Scene4: React.FC = () => {
 					{kinds.map((kind, i) => (
 						<path
 							key={kind}
-							d={`M${110 + i * 260} 80 Q${110 + i * 260} 180 ${CX} 240`}
+							d={`M${165 + i * 260} 80 Q${165 + i * 260} 180 ${CX} 240`}
 							stroke={ORANGE}
 							strokeWidth={6}
 							fill="none"
@@ -873,62 +873,70 @@ const Scene6: React.FC = () => {
 				<Orange>١.</Orange> مين اشترى من الإعلان
 			</Card>
 			<Stage>
-				<Phone x={190} height={500}>
-					<FeedPost sponsored />
-				</Phone>
-				<svg
-					width={SAFE_W}
-					height={640}
-					style={{position: 'absolute', left: 0, top: 0}}
-				>
-					<path
-						d={`M600 200 Q420 60 300 220`}
-						stroke={ORANGE}
-						strokeWidth={8}
-						fill="none"
-						strokeLinecap="round"
-						pathLength={1}
-						strokeDasharray="1 1"
-						strokeDashoffset={1 - line}
-					/>
-				</svg>
-				<svg
-					width={220}
-					height={220}
-					viewBox="0 0 100 100"
-					style={{position: 'absolute', left: 520, top: 260}}
-				>
-					<path
-						d="M10 20 H24 L34 64 H80 L88 34 H30"
-						stroke={WHITE}
-						strokeWidth="7"
-						fill="none"
-						strokeLinejoin="round"
-						strokeLinecap="round"
-					/>
-					<circle cx="40" cy="78" r="7" fill={WHITE} />
-					<circle cx="74" cy="78" r="7" fill={WHITE} />
-				</svg>
 				<div
 					style={{
 						position: 'absolute',
-						left: 400,
-						top: 130,
-						padding: '18px 26px',
-						borderRadius: 20,
-						background: WHITE,
-						display: 'flex',
-						alignItems: 'center',
-						gap: 14,
-						fontFamily,
-						fontWeight: 900,
-						fontSize: 40,
-						color: BG,
-						transform: `scale(${notif})`,
-						boxShadow: `0 0 50px rgba(255,90,31,${0.6 * line})`,
+						inset: 0,
+						transform: 'translateX(32px)',
 					}}
 				>
-					<Check size={50} color={GREEN} /> Purchase
+					<Phone x={190} height={500}>
+						<FeedPost sponsored />
+					</Phone>
+					<svg
+						width={SAFE_W}
+						height={640}
+						style={{position: 'absolute', left: 0, top: 0}}
+					>
+						<path
+							d={`M600 200 Q420 60 300 220`}
+							stroke={ORANGE}
+							strokeWidth={8}
+							fill="none"
+							strokeLinecap="round"
+							pathLength={1}
+							strokeDasharray="1 1"
+							strokeDashoffset={1 - line}
+						/>
+					</svg>
+					<svg
+						width={220}
+						height={220}
+						viewBox="0 0 100 100"
+						style={{position: 'absolute', left: 520, top: 260}}
+					>
+						<path
+							d="M10 20 H24 L34 64 H80 L88 34 H30"
+							stroke={WHITE}
+							strokeWidth="7"
+							fill="none"
+							strokeLinejoin="round"
+							strokeLinecap="round"
+						/>
+						<circle cx="40" cy="78" r="7" fill={WHITE} />
+						<circle cx="74" cy="78" r="7" fill={WHITE} />
+					</svg>
+					<div
+						style={{
+							position: 'absolute',
+							left: 400,
+							top: 130,
+							padding: '18px 26px',
+							borderRadius: 20,
+							background: WHITE,
+							display: 'flex',
+							alignItems: 'center',
+							gap: 14,
+							fontFamily,
+							fontWeight: 900,
+							fontSize: 40,
+							color: BG,
+							transform: `scale(${notif})`,
+							boxShadow: `0 0 50px rgba(255,90,31,${0.6 * line})`,
+						}}
+					>
+						<Check size={50} color={GREEN} /> Purchase
+					</div>
 				</div>
 			</Stage>
 		</>
@@ -945,7 +953,7 @@ const Scene7: React.FC = () => {
 		extrapolateLeft: 'clamp',
 		extrapolateRight: 'clamp',
 	});
-	const phone = usePop(30);
+	const phone = usePop(14);
 	return (
 		<>
 			<Card>
@@ -955,82 +963,97 @@ const Scene7: React.FC = () => {
 				<div
 					style={{
 						position: 'absolute',
-						left: 40,
-						top: 60,
-						width: 360,
-						height: 260,
-						borderRadius: 18,
-						border: '8px solid #333',
-						background: PANEL,
-						overflow: 'hidden',
+						inset: 0,
+						transform: 'translateX(32px)',
 					}}
 				>
 					<div
 						style={{
-							transform: 'scale(0.7)',
-							transformOrigin: 'top left',
-							width: '143%',
+							position: 'absolute',
+							left: 40,
+							top: 60,
+							width: 360,
+							height: 260,
+							borderRadius: 18,
+							border: '8px solid #333',
+							background: PANEL,
+							overflow: 'hidden',
 						}}
 					>
-						<Website />
+						<div
+							style={{
+								transform: 'scale(0.7)',
+								transformOrigin: 'top left',
+								width: '143%',
+							}}
+						>
+							<Website />
+						</div>
 					</div>
-				</div>
-				<div
-					style={{
-						position: 'absolute',
-						left: interpolate(leave, [0, 1], [180, 90]),
-						top: interpolate(leave, [0, 1], [160, 380]),
-						opacity: 1 - back * 0.6,
-					}}
-				>
-					<Person size={110} color={WHITE} />
-				</div>
-				<svg
-					width={110}
-					height={110}
-					viewBox="0 0 100 100"
-					style={{position: 'absolute', left: 290, top: 230, opacity: leave}}
-				>
-					<path
-						d="M10 20 H24 L34 64 H80 L88 34 H30"
-						stroke={RED}
-						strokeWidth="8"
-						fill="none"
-						strokeLinejoin="round"
-					/>
-					<path d="M44 30 L72 58 M72 30 L44 58" stroke={RED} strokeWidth="8" />
-				</svg>
-				<svg
-					width={SAFE_W}
-					height={640}
-					style={{position: 'absolute', left: 0, top: 0}}
-				>
-					<path
-						d="M160 470 C 300 640, 520 600, 600 420"
-						stroke={ORANGE}
-						strokeWidth={10}
-						fill="none"
-						strokeLinecap="round"
-						pathLength={1}
-						strokeDasharray="1 1"
-						strokeDashoffset={1 - back}
-					/>
-					<path
-						d="M570 440 L600 400 L630 450"
-						stroke={ORANGE}
-						strokeWidth={10}
-						fill="none"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						opacity={back > 0.95 ? 1 : 0}
-					/>
-				</svg>
-				<div
-					style={{transform: `scale(${phone})`, transformOrigin: '640px 220px'}}
-				>
-					<Phone x={640} y={-90} height={420}>
-						<FeedPost sponsored />
-					</Phone>
+					<div
+						style={{
+							position: 'absolute',
+							left: interpolate(leave, [0, 1], [180, 90]),
+							top: interpolate(leave, [0, 1], [160, 380]),
+							opacity: 1 - back * 0.6,
+						}}
+					>
+						<Person size={110} color={WHITE} />
+					</div>
+					<svg
+						width={110}
+						height={110}
+						viewBox="0 0 100 100"
+						style={{position: 'absolute', left: 290, top: 230, opacity: leave}}
+					>
+						<path
+							d="M10 20 H24 L34 64 H80 L88 34 H30"
+							stroke={RED}
+							strokeWidth="8"
+							fill="none"
+							strokeLinejoin="round"
+						/>
+						<path
+							d="M44 30 L72 58 M72 30 L44 58"
+							stroke={RED}
+							strokeWidth="8"
+						/>
+					</svg>
+					<svg
+						width={SAFE_W}
+						height={640}
+						style={{position: 'absolute', left: 0, top: 0}}
+					>
+						<path
+							d="M160 470 C 300 640, 520 600, 600 420"
+							stroke={ORANGE}
+							strokeWidth={10}
+							fill="none"
+							strokeLinecap="round"
+							pathLength={1}
+							strokeDasharray="1 1"
+							strokeDashoffset={1 - back}
+						/>
+						<path
+							d="M570 440 L600 400 L630 450"
+							stroke={ORANGE}
+							strokeWidth={10}
+							fill="none"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							opacity={back > 0.95 ? 1 : 0}
+						/>
+					</svg>
+					<div
+						style={{
+							transform: `scale(${phone})`,
+							transformOrigin: '640px 220px',
+						}}
+					>
+						<Phone x={640} y={-90} height={420}>
+							<FeedPost sponsored />
+						</Phone>
+					</div>
 				</div>
 			</Stage>
 		</>
@@ -1321,12 +1344,12 @@ const Scene12: React.FC = () => {
 					textShadow: `0 0 60px rgba(255,90,31,0.6)`,
 				}}
 			>
-				{'PIXEL'.slice(0, letters)}
-				<span
-					style={{opacity: Math.floor(frame / 8) % 2 ? 0 : 1, color: WHITE}}
-				>
-					|
-				</span>
+				{/* Untyped letters keep their space so the word stays centered */}
+				{'PIXEL'.split('').map((letter, i) => (
+					<span key={i} style={{opacity: i < letters ? 1 : 0}}>
+						{letter}
+					</span>
+				))}
 			</div>
 			<svg
 				width={200}
