@@ -178,9 +178,9 @@ import {
 } from './StudioApis/SaveDefaultProps';
 import {TriggerCalculateMetadata} from './StudioApis/TriggerCalculateMetadata';
 import {WriteStaticFile} from './StudioApis/WriteStaticFile';
+import './style.css';
 import {SubtitleArtifact} from './SubtitleArtifact/SubtitleArtifact';
 import {SvgFilter} from './SvgFilter';
-import './style.css';
 import {Tailwind} from './Tailwind';
 import {TenFrameTester} from './TenFrameTester';
 import {TextStroke} from './TextStroke';
@@ -303,6 +303,10 @@ import {
 	ProResMediaVideo,
 	calculateProResMediaVideoMetadata,
 } from './ProResMediaVideo';
+import {
+	REIGNITE_REEL_DURATION,
+	ReigniteReel,
+} from './ReigniteReel/ReigniteReel';
 import {
 	RoughNotationBox,
 	RoughNotationBracket,
@@ -3310,6 +3314,16 @@ export const Index: React.FC = () => {
 				fps={30}
 				durationInFrames={30}
 			/>
+			<Folder name="Reignite">
+				<Composition
+					id="reignite-ga-vs-pixel"
+					component={ReigniteReel}
+					width={1080}
+					height={1920}
+					fps={30}
+					durationInFrames={REIGNITE_REEL_DURATION}
+				/>
+			</Folder>
 			<Folder name="error-overlay">
 				<Composition
 					id="error-overlay-unsymbolicated-e2e"
