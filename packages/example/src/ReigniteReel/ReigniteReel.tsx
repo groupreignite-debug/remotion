@@ -87,6 +87,39 @@ const SCENES: {
 
 export const REIGNITE_REEL_DURATION = s(31);
 
+// One sound per visual moment so no effect repeats across scenes.
+// `frame` is relative to the start of `scene`.
+const SFX_CUES: {
+	scene: number;
+	frame: number;
+	file: string;
+	volume: number;
+	toneFrequency: number;
+}[] = [
+	{scene: 0, frame: 14, file: 'check', volume: 0.16, toneFrequency: 1},
+	{scene: 0, frame: 42, file: 'stamp', volume: 0.2, toneFrequency: 1},
+	{scene: 1, frame: 6, file: 'coins', volume: 0.14, toneFrequency: 1},
+	{scene: 2, frame: 0, file: 'whoosh', volume: 0.1, toneFrequency: 1},
+	{scene: 2, frame: 4, file: 'radar', volume: 0.15, toneFrequency: 1},
+	{scene: 3, frame: 3, file: 'blips', volume: 0.15, toneFrequency: 1},
+	{scene: 4, frame: 6, file: 'beam', volume: 0.12, toneFrequency: 1},
+	{scene: 5, frame: 20, file: 'chaching', volume: 0.15, toneFrequency: 1},
+	{scene: 6, frame: 20, file: 'boomerang', volume: 0.15, toneFrequency: 1},
+	{scene: 7, frame: 8, file: 'pops', volume: 0.15, toneFrequency: 1},
+	{scene: 8, frame: 0, file: 'slide', volume: 0.15, toneFrequency: 1},
+	{scene: 9, frame: 12, file: 'lock', volume: 0.2, toneFrequency: 1},
+	{scene: 10, frame: 2, file: 'question', volume: 0.15, toneFrequency: 1},
+	// One keystroke per PIXEL letter, each pitched slightly differently
+	...[1, 1.08, 0.94, 1.12, 0.98].map((toneFrequency, n) => ({
+		scene: 11,
+		frame: (n + 1) * 6,
+		file: 'key',
+		volume: 0.2,
+		toneFrequency,
+	})),
+	{scene: 12, frame: 0, file: 'ignite', volume: 0.18, toneFrequency: 1},
+];
+
 const usePop = (delay: number) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
@@ -1457,30 +1490,21 @@ export const ReigniteReel: React.FC = () => {
 								durationInFrames={scene.vo.durationInFrames}
 							/>
 						) : null}
-						{i > 0 ? (
-							<Audio src={staticFile('reignite/whoosh.wav')} volume={0.126} />
-						) : null}
-						<Sequence from={i === 0 ? 14 : 3} layout="none">
-							<Audio src={staticFile('reignite/pop.wav')} volume={0.126} />
-						</Sequence>
 					</Sequence>
 				);
 			})}
 			<Audio src={staticFile('reignite/vo.m4a')} />
-			<Sequence from={SCENES[0].from + 42} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.21} />
-			</Sequence>
-			<Sequence from={SCENES[9].from + 12} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.245} />
-			</Sequence>
-			{[1, 2, 3, 4, 5].map((n) => (
+			{SFX_CUES.map((cue, i) => (
 				<Sequence
-					key={n}
-					from={SCENES[11].from + n * 6}
-					durationInFrames={6}
+					key={i}
+					from={SCENES[cue.scene].from + cue.frame}
 					layout="none"
 				>
-					<Audio src={staticFile('reignite/click.wav')} volume={0.175} />
+					<Audio
+						src={staticFile(`reignite/sfx/${cue.file}.wav`)}
+						volume={cue.volume}
+						toneFrequency={cue.toneFrequency}
+					/>
 				</Sequence>
 			))}
 		</AbsoluteFill>
