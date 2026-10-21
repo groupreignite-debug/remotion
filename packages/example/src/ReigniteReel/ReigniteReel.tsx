@@ -47,21 +47,44 @@ const CX = SAFE_W / 2;
 
 const s = (sec: number) => Math.round(sec * 30);
 
-const SCENES: {from: number; vo: string | null}[] = [
-	{from: 0, vo: 'عندك Google Analytics؟ بعدك بحاجة لـPixel.'},
-	{from: 2.9, vo: 'عم تدفع على إعلانات Meta؟ هيدا بيهمّك.'},
-	{from: 5.1, vo: 'Google Analytics بيراقب موقعك.'},
-	{from: 6.9, vo: 'من وين إجا الزائر، وشو عمل.'},
-	{from: 9.4, vo: 'الـPixel بيبعت هالمعلومات لـMeta.'},
-	{from: 11.6, vo: 'لتعرف مين اشترى بسبب الإعلان.'},
-	{from: 14.6, vo: 'وترجع تلحق اللي فلّوا بلا ما يشتروا.'},
-	{from: 16.7, vo: 'وتلاقي ناس بيشبهوا زبائنك.'},
-	{from: 18.9, vo: 'Analytics بيخبرك. الـPixel بيعلّم إعلانك.'},
-	{from: 21.4, vo: 'عم تشغّل إعلانات Meta؟ بدك التنين.'},
-	{from: 23.6, vo: 'مش متأكد إذا موقعك فيه واحد؟'},
-	{from: 25.8, vo: 'اكتب PIXEL بالكومنتات ومنشيّك معك.'},
-	{from: 28.4, vo: null},
-].map((scene) => ({...scene, from: s(scene.from)}));
+// Voiceover is played slightly faster so it ends before the 28.4s end card
+const VO_RATE = 1.06;
+
+// Each line's speech span in seconds within vo.mp3, measured from its pauses
+const VO_LINES: {text: string; start: number; end: number}[] = [
+	{text: 'عندك Google Analytics؟ بعدك بحاجة لـPixel.', start: 0, end: 2.83},
+	{text: 'عم تدفع على إعلانات Meta؟ هيدا بيهمّك.', start: 3.25, end: 5.61},
+	{text: 'Google Analytics بيراقب موقعك.', start: 6.12, end: 7.82},
+	{text: 'من وين إجا الزائر، وشو عمل.', start: 8.3, end: 10.04},
+	{text: 'الـPixel بيبعت هالمعلومات لـMeta.', start: 10.45, end: 12.38},
+	{text: 'لتعرف مين اشترى بسبب الإعلان.', start: 12.61, end: 14.59},
+	{text: 'وترجع تلحق اللي فلّوا بلا ما يشتروا.', start: 14.74, end: 16.87},
+	{text: 'وتلاقي ناس بيشبهوا زبائنك.', start: 17.15, end: 18.7},
+	{text: 'Analytics بيخبرك. الـPixel بيعلّم إعلانك.', start: 19.17, end: 22.09},
+	{text: 'عم تشغّل إعلانات Meta؟ بدك التنين.', start: 22.62, end: 24.93},
+	{text: 'مش متأكد إذا موقعك فيه واحد؟', start: 25.33, end: 27.11},
+	{text: 'اكتب PIXEL بالكومنتات ومنشيّك معك.', start: 27.45, end: 29.72},
+];
+
+// Each scene cuts in just before its line is spoken
+const SCENES: {
+	from: number;
+	vo: {text: string; from: number; durationInFrames: number} | null;
+}[] = [
+	...VO_LINES.map((line) => {
+		const from = Math.max(0, s(line.start / VO_RATE - 0.12));
+		const speechFrom = s(line.start / VO_RATE);
+		return {
+			from,
+			vo: {
+				text: line.text,
+				from: speechFrom - from,
+				durationInFrames: s(line.end / VO_RATE) - speechFrom,
+			},
+		};
+	}),
+	{from: s(28.4), vo: null},
+];
 
 export const REIGNITE_REEL_DURATION = s(30);
 
@@ -107,14 +130,17 @@ const Card: React.FC<{
 	);
 };
 
-const Subtitle: React.FC<{text: string; durationInFrames: number}> = ({
-	text,
-	durationInFrames,
-}) => {
+const Subtitle: React.FC<{
+	text: string;
+	from: number;
+	durationInFrames: number;
+}> = ({text, from, durationInFrames}) => {
 	const frame = useCurrentFrame();
 	const words = text.split(' ');
-	const speakFrames = durationInFrames * 0.88;
-	const active = Math.floor((frame / speakFrames) * words.length);
+	const active = Math.min(
+		words.length - 1,
+		Math.max(0, Math.floor(((frame - from) / durationInFrames) * words.length)),
+	);
 	return (
 		<div
 			style={{
@@ -1403,22 +1429,31 @@ export const ReigniteReel: React.FC = () => {
 					>
 						<SceneComponent />
 						{scene.vo ? (
-							<Subtitle text={scene.vo} durationInFrames={duration} />
+							<Subtitle
+								text={scene.vo.text}
+								from={scene.vo.from}
+								durationInFrames={scene.vo.durationInFrames}
+							/>
 						) : null}
 						{i > 0 ? (
-							<Audio src={staticFile('reignite/whoosh.wav')} volume={0.35} />
+							<Audio src={staticFile('reignite/whoosh.wav')} volume={0.18} />
 						) : null}
 						<Sequence from={i === 0 ? 14 : 3} layout="none">
-							<Audio src={staticFile('reignite/pop.wav')} volume={0.3} />
+							<Audio src={staticFile('reignite/pop.wav')} volume={0.18} />
 						</Sequence>
 					</Sequence>
 				);
 			})}
+			<Audio
+				src={staticFile('reignite/vo.mp3')}
+				playbackRate={VO_RATE}
+				volume={1.8}
+			/>
 			<Sequence from={SCENES[0].from + 42} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.4} />
+				<Audio src={staticFile('reignite/impact.wav')} volume={0.3} />
 			</Sequence>
 			<Sequence from={SCENES[9].from + 12} durationInFrames={20} layout="none">
-				<Audio src={staticFile('reignite/impact.wav')} volume={0.5} />
+				<Audio src={staticFile('reignite/impact.wav')} volume={0.35} />
 			</Sequence>
 			{[1, 2, 3, 4, 5].map((n) => (
 				<Sequence
@@ -1427,7 +1462,7 @@ export const ReigniteReel: React.FC = () => {
 					durationInFrames={6}
 					layout="none"
 				>
-					<Audio src={staticFile('reignite/click.wav')} volume={0.45} />
+					<Audio src={staticFile('reignite/click.wav')} volume={0.25} />
 				</Sequence>
 			))}
 		</AbsoluteFill>
