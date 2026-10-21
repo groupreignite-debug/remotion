@@ -36,7 +36,12 @@ const RED = '#FF3B3B';
 const PANEL = '#1A1A1A';
 const LINE = '#2C2C2C';
 
-// Instagram safe zone: x 0-850, y 230-1440
+// Instagram safe zone is x 0-850, y 230-1440. Text sits in x 110-850 so it
+// reads close to centered; visuals and the logo are centered on the frame.
+const FRAME_CX = 540;
+const TEXT_LEFT = 110;
+const TEXT_W = 850 - TEXT_LEFT;
+// Coordinate space of the visual stage, which is centered on the frame
 const SAFE_W = 850;
 const CX = SAFE_W / 2;
 
@@ -84,8 +89,8 @@ const Card: React.FC<{
 			style={{
 				position: 'absolute',
 				top: 270,
-				left: 0,
-				width: SAFE_W,
+				left: TEXT_LEFT,
+				width: TEXT_W,
 				textAlign: 'center',
 				fontFamily,
 				fontWeight: 900,
@@ -115,8 +120,8 @@ const Subtitle: React.FC<{text: string; durationInFrames: number}> = ({
 			style={{
 				position: 'absolute',
 				top: 1250,
-				left: 30,
-				width: SAFE_W - 60,
+				left: TEXT_LEFT + 20,
+				width: TEXT_W - 40,
 				display: 'flex',
 				justifyContent: 'center',
 			}}
@@ -154,7 +159,7 @@ const Subtitle: React.FC<{text: string; durationInFrames: number}> = ({
 
 const Background: React.FC = () => {
 	const frame = useCurrentFrame();
-	const glowX = CX + Math.sin(frame / 40) * 160;
+	const glowX = FRAME_CX + Math.sin(frame / 40) * 160;
 	const glowY = 820 + Math.cos(frame / 55) * 200;
 	return (
 		<AbsoluteFill style={{backgroundColor: BG}}>
@@ -184,7 +189,7 @@ const Stage: React.FC<{children: React.ReactNode; zoom?: number}> = ({
 		style={{
 			position: 'absolute',
 			top: 560,
-			left: 0,
+			left: (1080 - SAFE_W) / 2,
 			width: SAFE_W,
 			height: 640,
 			transform: `scale(${zoom})`,
@@ -881,7 +886,7 @@ const Scene6: React.FC = () => {
 				<div
 					style={{
 						position: 'absolute',
-						left: 440,
+						left: 400,
 						top: 130,
 						padding: '18px 26px',
 						borderRadius: 20,
@@ -1057,7 +1062,7 @@ const Scene9: React.FC = () => {
 	});
 	return (
 		<>
-			<Card fontSize={76}>
+			<Card fontSize={64}>
 				<div style={{display: 'flex', justifyContent: 'space-around'}}>
 					<div>
 						<span dir="ltr">GA</span> بيخبرك
@@ -1279,8 +1284,8 @@ const Scene12: React.FC = () => {
 				style={{
 					position: 'absolute',
 					top: 470,
-					left: 0,
-					width: SAFE_W,
+					left: TEXT_LEFT,
+					width: TEXT_W,
 					textAlign: 'center',
 					fontFamily,
 					fontWeight: 900,
@@ -1303,7 +1308,7 @@ const Scene12: React.FC = () => {
 				viewBox="0 0 100 90"
 				style={{
 					position: 'absolute',
-					left: CX - 100,
+					left: FRAME_CX - 100,
 					top: 860,
 					transform: `scale(${usePop(30)})`,
 				}}
@@ -1323,7 +1328,7 @@ const Scene12: React.FC = () => {
 				width={120}
 				height={150}
 				viewBox="0 0 40 50"
-				style={{position: 'absolute', left: CX - 60, top: 1060 + bounce}}
+				style={{position: 'absolute', left: FRAME_CX - 60, top: 1060 + bounce}}
 			>
 				<path
 					d="M20 4 V42 M6 28 L20 44 L34 28"
@@ -1345,7 +1350,7 @@ const EndCard: React.FC = () => {
 		<AbsoluteFill style={{backgroundColor: '#000'}}>
 			<AbsoluteFill
 				style={{
-					background: `radial-gradient(circle at ${CX}px 800px, rgba(255,90,31,${0.25 + Math.sin(frame / 5) * 0.08}), transparent 480px)`,
+					background: `radial-gradient(circle at ${FRAME_CX}px 800px, rgba(255,90,31,${0.25 + Math.sin(frame / 5) * 0.08}), transparent 480px)`,
 				}}
 			/>
 			<Img
@@ -1354,7 +1359,7 @@ const EndCard: React.FC = () => {
 					position: 'absolute',
 					width: 720,
 					height: 720,
-					left: CX - 360,
+					left: FRAME_CX - 360,
 					top: 835 - 360,
 					mixBlendMode: 'lighten',
 					transform: `scale(${interpolate(pop, [0, 1], [0.85, 1])})`,
