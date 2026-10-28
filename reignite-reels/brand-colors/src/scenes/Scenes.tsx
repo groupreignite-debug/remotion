@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { ASSETS, BRANDS, C, FLASH, FONT, LOGO_STYLE, ease } from "../theme";
 import { Ar, Term } from "../components/Base";
+import { NUMBERS_AT, wordAt } from "../timeline";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -28,10 +29,10 @@ const Headline: React.FC<{ children: React.ReactNode; top?: number; size?: numbe
 };
 
 // Two stacked color blocks with the brand name as plain text (never a logo).
-const BrandPair: React.FC<{ a: string; b: string; name: string; at?: number }> = ({ a, b, name, at = 0 }) => {
+const BrandPair: React.FC<{ a: string; b: string; name: string; at?: number; nameAt?: number }> = ({ a, b, name, at = 0, nameAt = at + 0.25 }) => {
   const pa = useSpr(at, 16);
   const pb = useSpr(at + 0.12, 16);
-  const pn = useP(at + 0.25, 0.4);
+  const pn = useP(nameAt, 0.4);
   const W = 640;
   const H = 300;
   return (
@@ -94,13 +95,15 @@ export const S02: React.FC = () => {
   );
 };
 
-export const S03: React.FC = () => <BrandPair a={BRANDS.mcd.a} b={BRANDS.mcd.b} name={BRANDS.mcd.name} />;
-export const S04: React.FC = () => <BrandPair a={BRANDS.spotify.a} b={BRANDS.spotify.b} name={BRANDS.spotify.name} />;
+// The VO says the colors first, then the brand name, so the name lands when it's spoken.
+export const S03: React.FC = () => <BrandPair a={BRANDS.mcd.a} b={BRANDS.mcd.b} name={BRANDS.mcd.name} nameAt={wordAt("03", 2) - 0.1} />;
+export const S04: React.FC = () => <BrandPair a={BRANDS.spotify.a} b={BRANDS.spotify.b} name={BRANDS.spotify.name} nameAt={wordAt("04", 2) - 0.1} />;
 
-// 05 Seven dots, four pop, three grow.
+// 05 Seven dots, four pop, three grow on "تلات".
 export const S05: React.FC = () => {
-  const pop = useP(0.6, 0.35);
-  const grow = useSpr(0.9, 12);
+  const three = wordAt("05", 4);
+  const pop = useP(three - 0.3, 0.35);
+  const grow = useSpr(three, 12);
   const seven = ["#FF4D1A", "#7F7CAF", "#1A1A1A", "#00A6ED", "#F5F1EA", "#7FB800", "#FFB000"];
   const keep = new Set([0, 2, 4]);
   return (
@@ -233,7 +236,7 @@ export const S09: React.FC = () => {
       </Headline>
       <div style={{ position: "absolute", top: 600, left: 190, width: 700, height: 560, display: "flex", flexDirection: "column", gap: 0, borderRadius: 32, overflow: "hidden" }}>
         {parts.map((p, i) => {
-          const g = useP(0.2 + i * 0.25, 0.45);
+          const g = useP(NUMBERS_AT[i] - 0.1, 0.45);
           return (
             <div key={i} style={{ flexGrow: p.v * g + 0.001, flexBasis: 0, background: p.c, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT, fontWeight: 900, fontSize: 70, color: p.t }}>
               {g > 0.6 ? `${p.v}%` : ""}

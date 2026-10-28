@@ -4,7 +4,7 @@ import { ASSETS } from "./theme";
 import { Grid } from "./components/Base";
 import { Subtitles } from "./components/Subtitles";
 import * as S from "./scenes/Scenes";
-import { SCENES, VO_END } from "./timeline";
+import { NUMBERS_AT, SCENES, VO_END, wordAt } from "./timeline";
 import { ensureFonts } from "./fonts";
 import { SFX, SFX_VOL } from "./sfx";
 
@@ -17,11 +17,11 @@ const COMPONENTS: Record<string, React.FC> = {
 const CUES: [scene: string, at: number, sfx: keyof typeof SFX][] = [
   ["01", 0, "flash"], ["01", 0.7, "whoosh"],
   ["02", 0, "whoosh"], ["02", 0.25, "pop"], ["02", 0.65, "pop"],
-  ["03", 0, "whoosh"], ["04", 0, "whoosh"],
-  ["05", 0, "whoosh"], ["05", 0.6, "pop"], ["05", 0.9, "ding"],
+  ["03", 0, "whoosh"], ["03", wordAt("03", 2) - 0.1, "pop"], ["04", 0, "whoosh"], ["04", wordAt("04", 2) - 0.1, "pop"],
+  ["05", 0, "whoosh"], ["05", wordAt("05", 4) - 0.3, "pop"], ["05", wordAt("05", 4), "ding"],
   ["06", 0, "whoosh"], ["07", 0, "whoosh"],
   ["08", 0, "whoosh"], ["08", 0.9, "click"],
-  ["09", 0, "whoosh"], ["09", 0.2, "pop"], ["09", 0.45, "pop"], ["09", 0.7, "pop"],
+  ["09", 0, "whoosh"], ...NUMBERS_AT.map((t) => ["09", t - 0.1, "pop"] as [string, number, keyof typeof SFX]),
   ["10", 0, "whoosh"], ...[0.2, 0.4, 0.6, 0.8, 1.0, 1.2].map((t) => ["10", t, "flip"] as [string, number, keyof typeof SFX]),
   ["11", 0, "whoosh"], ["11", 0.35, "pop"], ["11", 0.5, "pop"], ["11", 0.65, "pop"], ["11", 0.8, "pop"],
   ["12", 0, "whoosh"], ["12", 0.1, "ding"],

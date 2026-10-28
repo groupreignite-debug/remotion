@@ -26,3 +26,9 @@ export const wordTime = (id: string, n: number): number => {
   const count = SCRIPT[id].split(/\s+/).length;
   return l.start + ((l.end - l.start) * Math.min(n, count - 1)) / count;
 };
+
+// Seconds into a line's scene where its n-th spoken word starts.
+export const wordAt = (id: string, n: number): number => wordTime(id, n) - line(id).start;
+
+// Scribe returns "60:30:10" as one word, so these onsets (seconds into line 09) were measured from the VO waveform.
+export const NUMBERS_AT = [0.62, 1.24, 1.96];

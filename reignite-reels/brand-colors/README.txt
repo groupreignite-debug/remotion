@@ -19,10 +19,10 @@ WHERE THINGS ARE
 - public/audio/sfx/       sound effects
 
 AUDIO (ElevenLabs)
-- public/audio/vo.mp3      Voiceover: ElevenLabs eleven_v4, voice "Fadi - Lebanese
-                           Conversational Voice" (same as earlier reels), take A of 2,
-                           loudness-normalized to about -14 LUFS. vo_raw.mp3 = untouched take.
-- src/data/words.json      ElevenLabs Scribe word timings for vo.mp3.
+- public/audio/vo.mp3      Voiceover: your own recording (vo_raw.m4a), first 0.62s of silence
+                           trimmed, EQ'd for clarity (low-mid cut, presence boost), lightly
+                           compressed, loudness-normalized to about -14 LUFS.
+- src/data/words.json      ElevenLabs Scribe word timings for vo.mp3 (shifted for the trim).
 - src/data/lines.json      Line timings built from words.json:  node scripts/build-lines.mjs 0 0
 - public/audio/sfx/el/     ElevenLabs sound effects (trimmed, peak -1 dBFS):
                              whoosh, ding, click, ignite  - reused from the "GA vs Pixel" reel
